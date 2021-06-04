@@ -1,46 +1,21 @@
 import tornado.ioloop
 import tornado.web
 import os
-
-
-class IndexHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render("index.html")
-
-
-class DeliveryHandler(tornado.web.RequestHandler):
-    attributes = [
-        ["agenTel", "tel"],
-        ["agenName", "text"],
-        ["outNum", "number"],
-        ["outAddress", "text"],
-        ["delType", "text"],
-        ["delID", "number"],
-        ["warID", "number"],
-        ["gooName", "text"],
-        ["manName", "text"],
-        ["delNotes", "text"],
-        ["delTime", "datetime"]
-    ]
-
-    def get(self):
-        self.render("form/delivery.html", attributes=self.attributes)
-
-    def post(self):
-        # Get data here, and transfer data to database.
-        post_data = []
-        for item in self.attributes:
-            data = self.get_argument(item[0])
-            post_data.append([item[0], data])
-        self.write(str(post_data))
+from handler import *
 
 
 def make_app():
     return tornado.web.Application(
+        cookie_secret='secret',
         handlers=[
             (r"/", IndexHandler),
             (r"/index", IndexHandler),
             (r"/form/delivery", DeliveryHandler),
+            (r"/user/login", LoginHandler),
+            (r"/user", UserHandler),
+            (r"/user/supervisor", SupervisorHandler),
+            (r"/user/manager", ManagerHandler),
+            (r"/user/supplier", SupplierHandler),
         ],
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),

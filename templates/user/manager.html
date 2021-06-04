@@ -1,0 +1,13 @@
+{% extends ../base.html %}
+
+{% block title %} Manager - {{id}} {% end %}
+
+
+{% block body %}
+{% for item in attributes %}
+<div class="mb-3 row">
+    <div class="col-3">{{item[1]}}</div>
+    <div class="col-9">{{item[2]}}</div>
+</div>
+{% end %}
+{% end %}
