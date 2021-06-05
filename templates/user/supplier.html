@@ -1,6 +1,6 @@
 {% extends ../base.html %}
 
-{% block title %} Supplier {% end %}
+{% block title %} 制造商 {% end %}
 
 
 {% block body %}
@@ -13,16 +13,16 @@
               <input type="{{item[1]}}" class="form-control" name="{{item[0]}}">
           </div>
           {% end %}
-          <input type="submit" class="row btn btn-primary mt-3" value="Add Cargo"></input>
+          <input type="submit" class="row btn btn-primary mt-3" value="插入制造商"></input>
       </div>
       <div class="col-sm-9">
           <table class="table">
               <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Telephone</th>
+                    <th scope="col">制造商编号</th>
+                    <th scope="col">名称</th>
+                    <th scope="col">地址</th>
+                    <th scope="col">联系人电话</th>
                 </tr>
               </thead>
               <tbody>

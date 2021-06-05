@@ -2,23 +2,30 @@ from .base import BaseHandler
 
 class CargoHandler(BaseHandler):
     attributes = [
-        ["cargoName", "text", "Cargo Name"],
-        ["cargoSpec", "text", "Cargo Specification"],
-        ["producerID", "text", "Producer ID"],
+        ["Name", "text", "产品名称", str],
+        ["Norm", "text", "产品规格", str],
+        ["SupplierID", "number", "制造商编号", int]
     ]
-
-    data = [
-        ["1", "123", "123", "123"],
-        ["2", "233", "233", "233"],
-    ]
-
+    
     def get(self):
-        self.render("cargo.html", attributes=self.attributes, data = self.data)
+        self.cur.execute("SELECT * FROM `产品`;")
+        self.data = self.cur.fetchall()
+        self.render("cargo.html",
+                    attributes=self.attributes, data=self.data)
 
     def post(self):
-        # Get data here, and transfer data to database.
-        post_data = []
+        data = []
         for item in self.attributes:
-            data = self.get_argument(item[0])
-            post_data.append([item[0], data])
-        self.write(str(post_data))
+            data.append(item[3](self.get_argument(item[0])))
+        data.append(0)  # out
+        self.cur.callproc("new_product", data)
+        self.cur.execute("SELECT @_new_product_3")  # out
+        try:
+            self.db.commit()
+            ret = self.cur.fetchall()[0][0]
+            if ret != -1:
+                self.get()
+            else:
+                self.bad("不合法的插入", "/cargo")
+        except:
+            self.bad("不合法的插入（DB ERROR）", "/cargo")

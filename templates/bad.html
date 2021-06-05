@@ -1,18 +1,18 @@
 {% extends base.html %}
 
-{% block title %} Bad {% end %}
+{% block title %} 错误 {% end %}
 {% block head %}
-<meta http-equiv="refresh" content="5;url={{url}}">
+<meta http-equiv="refresh" content="3;url={{url}}">
 {% end %}
  
 
 {% block body %}
-<h1>Bad Request:</h1>
+<h1>错误:</h1>
 <p>
-{{error}}
+错误原因：{{error}}
 </p>
 <p>
-Redirect to {{url}} in 5 seconds.
+将在3秒后跳转至 {{url}}。
 </p>
 
 {% end %}

@@ -19,7 +19,7 @@
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">Navbar</a>
+                <a class="navbar-brand" href="/">物流管理系统</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,44 +27,55 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Index</a>
+                            <a class="nav-link" href="/">主页</a>
                         </li>
                         {% if user["type"] == b"supervisor" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/user">User</a>
+                            <a class="nav-link" href="/cargo">产品</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarForm" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                Form
+                                表单
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarForm">
-                                <li><a class="dropdown-item" href="/form/delivery">Delivery</a></li>
-                            </ul>
-                        </li>
-                        {% end %}
-                        {% if user["type"] == b"manager" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cargo">Cargo</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarForm" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Form
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarForm">
-                                <li><a class="dropdown-item" href="/form/ship">Ship</a></li>
-                                <li><a class="dropdown-item" href="/form/receive">Receive</a></li>
+                                <li><a class="dropdown-item" href="/form/ship">出库</a></li>
+                                <li><a class="dropdown-item" href="/form/receive">入库</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarUser" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                User
+                                用户
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarUser">
-                                <li><a class="dropdown-item" href="/user/supplier">Supplier</a></li>
-                                <li><a class="dropdown-item" href="/user/recipient">Recipient</a></li>
+                                <li><a class="dropdown-item" href="/user/supplier">制造商</a></li>
+                                <li><a class="dropdown-item" href="/user/recipient">取货人</a></li>
+                            </ul>
+                        </li>
+                        {% end %}
+                        {% if user["type"] == b"manager" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cargo">产品</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarForm" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                表单
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarForm">
+                                <li><a class="dropdown-item" href="/form/ship">出库</a></li>
+                                <li><a class="dropdown-item" href="/form/receive">入库</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarUser" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                用户
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarUser">
+                                <li><a class="dropdown-item" href="/user/supplier">制造商</a></li>
+                                <li><a class="dropdown-item" href="/user/recipient">取货人</a></li>
                             </ul>
                         </li>
                         {% end %}
@@ -77,11 +88,11 @@
                             <a href="/user" class="nav-link">{{ user["username"] }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/user/logout" class="nav-link">Logout</a>
+                            <a href="/user/logout" class="nav-link">登出</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a href="/user/login" class="nav-link">Login</a>
+                            <a href="/user/login" class="nav-link">登录</a>
                         </li>
                         {% end %}
                     </ul>
