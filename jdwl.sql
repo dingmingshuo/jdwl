@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 05/06/2021 23:10:52
+ Date: 06/06/2021 00:07:55
 */
 
 SET NAMES utf8;
@@ -36,6 +36,38 @@ INSERT INTO `收件人` VALUES (1, 'lym', 18610885833, '北京大学');
 INSERT INTO `收件人` VALUES (2, 'zym', 18610888852, '北京大学45甲');
 INSERT INTO `收件人` VALUES (3, 'hxy', 18610889933, '北京大学45乙');
 INSERT INTO `收件人` VALUES (4, 'fzz', 18610886622, '北京大学45乙');
+
+-- ----------------------------
+-- Table structure for log_info
+-- ----------------------------
+DROP TABLE IF EXISTS `log_info`;
+CREATE TABLE `log_info`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `log` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of log_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for user_table
+-- ----------------------------
+DROP TABLE IF EXISTS `user_table`;
+CREATE TABLE `user_table`  (
+  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `user_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `权限` int NULL DEFAULT NULL,
+  PRIMARY KEY (`user_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_table
+-- ----------------------------
+INSERT INTO `user_table` VALUES ('hxy', '223', 3);
+INSERT INTO `user_table` VALUES ('lym', '123456', 3);
+INSERT INTO `user_table` VALUES ('zym', '223', 3);
 
 -- ----------------------------
 -- Table structure for 产品
@@ -110,6 +142,7 @@ INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-28 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-29 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-30 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-31 00:00:00', 2, 15);
+INSERT INTO `入库信息` VALUES (1, 2, 1, '2021-06-06 00:05:58', 2, 15);
 
 -- ----------------------------
 -- Table structure for 出库信息
@@ -135,7 +168,9 @@ CREATE TABLE `出库信息`  (
 -- ----------------------------
 INSERT INTO `出库信息` VALUES (1, 1, 1, '2000-03-28 00:00:00', 3, 10);
 INSERT INTO `出库信息` VALUES (1, 1, 1, '2000-03-30 00:00:00', 3, 10);
+INSERT INTO `出库信息` VALUES (1, 1, 1, '2021-06-06 00:07:37', 3, 10);
 INSERT INTO `出库信息` VALUES (1, 2, 1, '2000-03-28 00:00:00', 3, 10);
+INSERT INTO `出库信息` VALUES (1, 2, 1, '2021-06-06 00:07:27', 3, 10);
 
 -- ----------------------------
 -- Table structure for 存储
@@ -155,8 +190,8 @@ CREATE TABLE `存储`  (
 -- ----------------------------
 -- Records of 存储
 -- ----------------------------
-INSERT INTO `存储` VALUES (1, 1, 1, 15);
-INSERT INTO `存储` VALUES (1, 2, 1, 0);
+INSERT INTO `存储` VALUES (1, 1, 1, 5);
+INSERT INTO `存储` VALUES (1, 2, 1, 5);
 
 -- ----------------------------
 -- Table structure for 生产产商
@@ -215,6 +250,23 @@ DROP VIEW IF EXISTS `西安仓`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `西安仓` AS select `存储`.`产品编号` AS `产品编号`,`存储`.`仓库编号` AS `仓库编号`,`存储`.`制造商编号` AS `制造商编号`,`存储`.`num` AS `num` from `存储` where (`存储`.`仓库编号` = 5);
 
 -- ----------------------------
+-- Procedure structure for create_user
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `create_user`;
+delimiter ;;
+CREATE PROCEDURE `create_user`(IN uname varchar(255),IN upassword varchar(255),IN token int,OUT rtn int)
+BEGIN
+  set rtn=1;
+	IF (select uname from user_table where uname=user_name) is NULL THEN
+	insert into user_table values(uname,upassword,token);
+	ELSE
+	set rtn=-1;
+	end if;
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Procedure structure for in_warhouse
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `in_warhouse`;
@@ -227,7 +279,7 @@ lable:BEGIN
 	leave lable;
 	End IF;
 	set rtn=1;
-	Insert into `入库信息` values(product_id,warehouse_id,maker_id,in_time,in_price,product_number);
+	Insert into `入库信息` values(product_id,warehouse_id,maker_id,SYSDATE(),in_price,product_number);
 	IF (select product_id from `存储` where product_id=`产品编号` and warehouse_id=`仓库编号`) is NULL THEN
 		INSERT INTO `存储` values(product_id,warehouse_id,maker_id,product_number);
 	ELSE 
@@ -283,7 +335,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `out_warhouse`;
 delimiter ;;
-CREATE PROCEDURE `out_warhouse`(IN product_id bigint,IN product_number integer,IN warehouse_id bigint,IN maker_id bigint,IN out_time datetime,IN price float,OUT rtn INT)
+CREATE PROCEDURE `out_warhouse`(IN product_id bigint,IN product_number integer,IN warehouse_id bigint,IN maker_id bigint,IN price float,OUT rtn INT)
 lable:begin
   DECLARE i INT DEFAULT 0;
 	DECLARE n INT DEFAULT 0;
@@ -303,19 +355,35 @@ lable:begin
 				end outer_label;
 		 end if;
 				start transaction;
+				set rtn=i;
 				update `存储`
 				set num=num-product_number
 				where product_id=`产品编号` and i=`仓库编号`;
-				Insert into `出库信息` values(product_id,i,maker_id,out_time,price,product_number);
+				Insert into `出库信息` values(product_id,i,maker_id,SYSDATE(),price,product_number);
 				commit;
 	else 
 		update `存储`
 		set num=num-product_number
 		where  product_id=`产品编号` and warehouse_id=`仓库编号`;
-		Insert into `出库信息` values(product_id,warehouse_id,maker_id,out_time,price,product_number);
+		Insert into `出库信息` values(product_id,warehouse_id,maker_id,SYSDATE(),price,product_number);
 		set rtn=0;
 	end if;
 END lable
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table user_table
+-- ----------------------------
+DROP TRIGGER IF EXISTS `sb`;
+delimiter ;;
+CREATE TRIGGER `sb` AFTER INSERT ON `user_table` FOR EACH ROW BEGIN
+DECLARE s1 VARCHAR(40);
+DECLARE s2 VARCHAR(20);
+SET s2 = " is created";
+SET s1 = CONCAT(new.user_name,s2);
+INSERT INTO log_info(log) values(s1);
+end
 ;;
 delimiter ;
 

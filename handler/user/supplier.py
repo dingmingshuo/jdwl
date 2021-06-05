@@ -24,9 +24,9 @@ class SupplierHandler(BaseHandler):
         data = []
         for item in self.attributes:
             data.append(item[3](self.get_argument(item[0])))
-        sql = "INSERT INTO `生产产商` VALUES (%d, '%s', '%s', %d);" % (data[0], data[1], data[2], data[3])
-        self.cur.execute(sql)
         try:
+            sql = "INSERT INTO `生产产商` VALUES (%d, '%s', '%s', %d);" % (data[0], data[1], data[2], data[3])
+            self.cur.execute(sql)
             self.db.commit()
             self.get()
         except:

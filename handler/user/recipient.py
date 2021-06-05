@@ -24,9 +24,9 @@ class RecipientHandler(BaseHandler):
         for item in self.attributes:
             data.append(item[3](self.get_argument(item[0])))
         data.append(0)  # out
-        self.cur.callproc("new_receive", data)
-        self.cur.execute("SELECT @_new_receive_3")  # out
         try:
+            self.cur.callproc("new_receive", data)
+            self.cur.execute("SELECT @_new_receive_3")  # out
             self.db.commit()
             ret = self.cur.fetchall()[0][0]
             if ret != -1:
