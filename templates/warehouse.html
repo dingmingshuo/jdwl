@@ -1,0 +1,30 @@
+{% extends base.html %}
+
+{% block title %} 仓库 - {{warehouse}} {% end %}
+
+
+{% block body %}
+<h1>{{warehouse}}</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">产品编号</th>
+                    <th scope="col">产品数量</th>
+                    <th scope="col">制造商编号</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <th scope="row">{{item[0]}}</th>
+                    <th>{{item[1]}}</th>
+                    <th>{{item[2]}}</th>
+                </tr>
+                {% end %}
+            </tbody>
+            </table>
+    </div>
+</div>
+{% end %}

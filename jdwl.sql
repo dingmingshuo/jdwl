@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 123
+ Source Server         : 333
  Source Server Type    : MySQL
  Source Server Version : 80023
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 06/06/2021 00:07:55
+ Date: 06/06/2021 02:19:52
 */
 
 SET NAMES utf8;
@@ -143,6 +143,7 @@ INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-29 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-30 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '1999-08-31 00:00:00', 2, 15);
 INSERT INTO `入库信息` VALUES (1, 2, 1, '2021-06-06 00:05:58', 2, 15);
+INSERT INTO `入库信息` VALUES (3, 1, 3, '2021-06-06 02:18:23', 3, 30);
 
 -- ----------------------------
 -- Table structure for 出库信息
@@ -192,6 +193,7 @@ CREATE TABLE `存储`  (
 -- ----------------------------
 INSERT INTO `存储` VALUES (1, 1, 1, 5);
 INSERT INTO `存储` VALUES (1, 2, 1, 5);
+INSERT INTO `存储` VALUES (3, 1, 3, 30);
 
 -- ----------------------------
 -- Table structure for 生产产商
@@ -274,8 +276,9 @@ delimiter ;;
 CREATE PROCEDURE `in_warhouse`(IN product_id bigint,IN product_number int,IN warehouse_id bigint,IN maker_id bigint,IN in_price float,OUT rtn INT)
 lable:BEGIN
 	#Routine body goes here...
-	IF (select product_id from `产品` where product_id=`产品编号` ) is NULL THEN
+	IF (select product_id from `产品` where product_id=`产品编号` and maker_id=`制造商编号` ) is NULL THEN
 	set rtn=-1;
+	
 	leave lable;
 	End IF;
 	set rtn=1;
@@ -369,6 +372,21 @@ lable:begin
 		set rtn=0;
 	end if;
 END lable
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for 库存查询
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `库存查询`;
+delimiter ;;
+CREATE PROCEDURE `库存查询`(IN name varchar(255),OUT total int)
+BEGIN 
+	#Routine body goes here...
+	declare k int default 0;
+	select `仓库编号` into k from `仓库` where name=`仓库名称`;
+  select `产品编号`, sum(num), `制造商编号` from `存储` where `仓库编号`=k group by `产品编号`;
+END
 ;;
 delimiter ;
 

@@ -1,5 +1,6 @@
 from .index import IndexHandler
 from .cargo import CargoHandler
+from .warehouse import WarehouseHandler
 
 from .form.delivery import DeliveryHandler
 from .form.ship import ShipHandler

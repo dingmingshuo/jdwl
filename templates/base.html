@@ -29,7 +29,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/">主页</a>
                         </li>
-                        {% if user["type"] == b"1" %}
+                        {% if _user["type"] == b"3" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/cargo">产品</a>
                         </li>
@@ -44,28 +44,14 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarUser" role="button" data-bs-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle" id="navbarWarehouse" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                用户
+                                仓库
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarUser">
-                                <li><a class="dropdown-item" href="/user/supplier">制造商</a></li>
-                                <li><a class="dropdown-item" href="/user/recipient">取货人</a></li>
-                            </ul>
-                        </li>
-                        {% end %}
-                        {% if user["type"] == b"3" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/cargo">产品</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarForm" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                表单
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarForm">
-                                <li><a class="dropdown-item" href="/form/ship">出库</a></li>
-                                <li><a class="dropdown-item" href="/form/receive">入库</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="navbarWarehouse">
+                                {% for item in _warehouse %}
+                                <li><a class="dropdown-item" href="/warehouse/{{item[0]}}">{{item[0]}}</a></li>
+                                {% end %}
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -83,9 +69,9 @@
                 </div>
                 <div class="d-flex">
                     <ul class="navbar-nav">
-                        {% if user["username"] != None %}
+                        {% if _user["username"] != None %}
                         <li class="nav-item">
-                            <a href="/user" class="nav-link">{{ user["username"] }}</a>
+                            <a href="/user" class="nav-link">{{ _user["username"] }}</a>
                         </li>
                         <li class="nav-item">
                             <a href="/user/logout" class="nav-link">登出</a>

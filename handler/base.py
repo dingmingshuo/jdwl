@@ -18,7 +18,10 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def render(self, *args, **kwargs):
         user = self.get_current_user()
-        kwargs['user'] = user
+        kwargs['_user'] = user
+        self.cur.execute("SELECT `仓库名称` FROM `仓库`;")
+        warehouse = self.cur.fetchall()
+        kwargs['_warehouse'] = warehouse
         super().render(*args, **kwargs)
 
     def bad(self, error, url="/index"):
