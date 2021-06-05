@@ -20,6 +20,7 @@ def make_app():
             (r"/user/supervisor", SupervisorHandler),
             (r"/user/manager", ManagerHandler),
             (r"/user/supplier", SupplierHandler),
+            (r"/user/recipient", RecipientHandler),
         ],
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),

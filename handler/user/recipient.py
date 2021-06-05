@@ -6,11 +6,11 @@ sys.path.insert(0, parent_dir_path)
 from base import BaseHandler
 
 
-class SupplierHandler(BaseHandler):
+class RecipientHandler(BaseHandler):
     attributes = [
-        ["supplierName", "text", "Supplier Name"],
-        ["supplierNote", "text", "Supplier Note"],
-        ["supplierTel", "tel", "Supplier Telephone"],
+        ["recipientName", "text", "Recipient Name"],
+        ["recipientAddress", "text", "Recipient Address"],
+        ["recipientTel", "tel", "Recipient Telephone"],
     ]
 
     data = [
@@ -20,7 +20,7 @@ class SupplierHandler(BaseHandler):
 
     def get(self):
         id = self.get_argument("id")
-        self.render("user/supplier.html", id = id, attributes=self.attributes, data = self.data)
+        self.render("user/recipient.html", id = id, attributes=self.attributes, data = self.data)
 
     def post(self):
         pass
