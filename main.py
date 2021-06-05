@@ -12,6 +12,7 @@ def make_app():
             (r"/index", IndexHandler),
             (r"/form/delivery", DeliveryHandler),
             (r"/user/login", LoginHandler),
+            (r"/user/logout", LogoutHandler),
             (r"/user", UserHandler),
             (r"/user/supervisor", SupervisorHandler),
             (r"/user/manager", ManagerHandler),

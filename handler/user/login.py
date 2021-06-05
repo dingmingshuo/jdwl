@@ -17,4 +17,4 @@ class LoginHandler(BaseHandler):
         type = "manager" # TODO
         self.set_secure_cookie("username", username)
         self.set_secure_cookie("type", type)
-        self.redirect('/index')
+        self.redirect("/index")

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{static_url('bootstrap-5.0.0-dist/css/bootstrap.min.css')}}">
     <script src="{{static_url('bootstrap-5.0.0-dist/js/bootstrap.bundle.js')}}"></script>
     <title>{% block title %}{% end %}</title>
+
+    {% block head %}{% end %}
 </head>
 
 <body>
@@ -46,6 +48,9 @@
                         {% if user["username"] != None %}
                         <li class="nav-item">
                             <a href="/user" class="nav-link">{{ user["username"] }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/user/logout" class="nav-link">Logout</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
