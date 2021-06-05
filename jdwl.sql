@@ -271,7 +271,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `in_warhouse`;
 delimiter ;;
-CREATE PROCEDURE `in_warhouse`(IN product_id bigint,IN product_number int,IN warehouse_id bigint,IN maker_id bigint,IN in_time datetime,IN in_price float,OUT rtn INT)
+CREATE PROCEDURE `in_warhouse`(IN product_id bigint,IN product_number int,IN warehouse_id bigint,IN maker_id bigint,IN in_price float,OUT rtn INT)
 lable:BEGIN
 	#Routine body goes here...
 	IF (select product_id from `产品` where product_id=`产品编号` ) is NULL THEN
