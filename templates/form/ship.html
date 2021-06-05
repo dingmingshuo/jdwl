@@ -5,6 +5,9 @@
 
 {% block body %}
 <form action="/form/ship" method="post">
+    <div class="mb-3 row">
+        若指定仓库无足够库存，系统会自动指定有足够库存仓库调货。
+    </div>
     {% for item in attributes %}
     <div class="mb-3 row">
         <label for="{{item[0]}}" class="col-sm-2 col-form-label">{{item[2]}}</label>

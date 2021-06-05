@@ -9,7 +9,7 @@ class ShipHandler(BaseHandler):
     attributes = [
         ["productID", "number", "产品编号", int],
         ["number", "number", "出库数量", int],
-        ["warehouseID", "number", "仓库编号", int],
+        ["warehouseID", "number", "出库仓库编号", int],
         ["receiverID", "number", "取货人编号", int],
         ["price", "number", "出库价格", float],
     ]
@@ -28,7 +28,10 @@ class ShipHandler(BaseHandler):
             self.db.commit()
             ret = self.cur.fetchall()[0][0]
             if ret != -1:
-                self.get()
+                if int(ret) != int(data[2]):
+                    self.bad("仓库 %s 无足够指定货物，从仓库 %s 调货。" % (data[2], ret), "/form/ship")
+                else:
+                    self.get()
             else:
                 self.bad("不合法的出库操作", "/form/ship")
         except:
