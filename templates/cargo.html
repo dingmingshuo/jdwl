@@ -1,0 +1,43 @@
+{% extends base.html %}
+
+{% block title %} Cargo {% end %}
+
+
+{% block body %}
+<form action="/cargo" method="post">
+    <div class="row">
+      <div class="col-sm-3">
+          {% for item in attributes %}
+          <label for="{{item[0]}}" class="row col-form-label">{{item[2]}}</label>
+          <div class="row">
+              <input type="{{item[1]}}" class="form-control" name="{{item[0]}}">
+          </div>
+          {% end %}
+          <input type="submit" class="row btn btn-primary mt-3" value="Add Cargo"></input>
+      </div>
+      <div class="col-sm-9">
+          <table class="table">
+              <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Specification</th>
+                    <th scope="col">Producer ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for item in data %}
+                  <tr>
+                      <th scope="row">{{item[0]}}</th>
+                      <td>{{item[1]}}</td>
+                      <td>{{item[2]}}</td>
+                      <td>{{item[3]}}</td>
+                  </tr>
+                  {% end %}
+              </tbody>
+            </table>
+      </div>
+      
+    </div>
+</form>
+{% end %}

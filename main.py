@@ -10,7 +10,10 @@ def make_app():
         handlers=[
             (r"/", IndexHandler),
             (r"/index", IndexHandler),
+            (r"/cargo", CargoHandler),
             (r"/form/delivery", DeliveryHandler),
+            (r"/form/ship", ShipHandler),
+            (r"/form/receive", ReceiveHandler),
             (r"/user/login", LoginHandler),
             (r"/user/logout", LogoutHandler),
             (r"/user", UserHandler),
