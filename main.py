@@ -22,6 +22,7 @@ def make_app():
             (r"/user/supplier", SupplierHandler),
             (r"/user/recipient", RecipientHandler),
             (r"/warehouse/(.*)", WarehouseHandler),
+            (r"/check/(.*)", CheckHandler),
         ],
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),

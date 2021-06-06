@@ -6,17 +6,17 @@
 {% block body %}
 <form action="/user/login" method="post">
     <div class="mb-3 row">
-        <label for="username" class="col-sm-2 col-form-label">Username</label>
+        <label for="username" class="col-sm-2 col-form-label">用户名</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" name="username">
         </div>
     </div>
     <div class="mb-3 row">
-        <label for="password" class="col-sm-2 col-form-label">Password</label>
+        <label for="password" class="col-sm-2 col-form-label">密码</label>
         <div class="col-sm-10">
             <input type="password" class="form-control" name="password">
         </div>
     </div>
-    <input type="submit" class="btn btn-primary mb-3">
+    <input type="submit" class="btn btn-primary mb-3" value="登录">
 </form>
 {% end %}
